@@ -1,7 +1,7 @@
 Jaijaz Newsletter
 ==============
 
-Newsletter plugin that handles newsletter creation and sending.
+Newsletter plugin that handles newsletter creation and sending. Subscription management and list management too.
 
 Requirements
 ------------
