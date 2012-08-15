@@ -70,3 +70,10 @@ if (!count($data)) {
     echo "Adding <b>Edit Subscribers</b> Page to menu<br />";
     Jojo::insertQuery("INSERT INTO {page} SET pg_title='Subscribers', pg_link='jojo_plugin_admin_edit', pg_url='admin/edit/newsletter_subscribers', pg_parent = ?, pg_order = 3", $_ADMIN_NEWSLETTER_ID);
 }
+
+/* Add Edit subscribers Page */
+$data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_url='admin/newsletter/preview'");
+if (!count($data)) {
+    echo "Adding <b>Edit Subscribers</b> Page to menu<br />";
+    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Newsletter Preview', pg_link='jojo_plugin_jaijaz_newsletter_preview', pg_url='admin/newsletter/preview', pg_parent = ?, pg_order = 4", $_ADMIN_NEWSLETTER_ID);
+}

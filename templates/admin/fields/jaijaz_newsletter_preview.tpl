@@ -1,0 +1,1 @@
+<a class="btn" href="{if $newsletterid}admin/newsletters/preview/{$newsletterid}{/if}" target="_blank">Preview Newsletter</a>
