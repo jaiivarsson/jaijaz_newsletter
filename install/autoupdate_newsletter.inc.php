@@ -133,9 +133,19 @@ $default_fd[$table]['send'] = array(
         'fd_tabname' => "4. Send",
     );
 
+$default_fd[$table]['send_date'] = array(
+        'fd_name' => "Status",
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "4. Send",
+    );
+
 $default_fd[$table]['status'] = array(
         'fd_name' => "Status",
-        'fd_type' => "readonly",
+        'fd_type' => "hidden",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",
@@ -312,7 +322,8 @@ $default_fd[$table]['status'] = array(
 
 $default_fd[$table]['confirmed'] = array(
         'fd_name' => "Confirmed",
-        'fd_type' => "readonly",
+        'fd_type' => "unixdate",
+        'fd_readonly' => "yes",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",
@@ -322,7 +333,8 @@ $default_fd[$table]['confirmed'] = array(
 
 $default_fd[$table]['confirmed_date'] = array(
         'fd_name' => "Confirmed date",
-        'fd_type' => "readonly",
+        'fd_type' => "unixdate",
+        'fd_readonly' => "yes",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",

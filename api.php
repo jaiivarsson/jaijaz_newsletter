@@ -36,30 +36,30 @@ $_provides['pluginClasses'] = array(
 /* Register URI handlers */
 /* Jojo::registerURI(null, 'jojo_plugin_jojo_newsletter', 'isUrl'); */
 
-/*
-$_options[] = array(
-    'id'        => 'phplist_admin',
-    'category'  => 'Newsletter',
-    'label'     => 'PHPlist Admin file location',
-    'description' => 'Full path to php list\'s admin index.php eg /home/httpd/phplist/lists/admin/index.php',
-    'type'      => 'text',
-    'default'   => '',
-    'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
-);
-
 
 $_options[] = array(
-    'id'        => 'phplist_fromaddress',
+    'id'        => 'jaijaz_newsletter_fromaddress',
     'category'  => 'Newsletter',
     'label'     => 'Newsletter "from" address',
     'description' => 'Address newsletters will appear to come from and bounce to eg noreply@example.com',
     'type'      => 'text',
-    'default'   => 'noreply@example.com',
+    'default'   => '',
     'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
+    'plugin'    => 'jaijaz_newsletter'
 );
 
+$_options[] = array(
+    'id'        => 'jaijaz_newsletter_fromname',
+    'category'  => 'Newsletter',
+    'label'     => 'Newsletter "from" name',
+    'description' => 'Name newsletters will appear to come from',
+    'type'      => 'text',
+    'default'   => '',
+    'options'   => '',
+    'plugin'    => 'jaijaz_newsletter'
+);
+
+/*
 $_options[] = array(
     'id'        => 'phplist_notifications',
     'category'  => 'Newsletter',

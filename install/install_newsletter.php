@@ -14,6 +14,7 @@ $query = "
         `preview` tinyint(4) NOT NULL,
         `send` tinyint(4) NOT NULL,
         `status` enum('draft','scheduled','sent') NOT NULL default 'no',
+        `send_date` bigint(20) NOT NULL,
         `stats` tinyint(4) NOT NULL,
         PRIMARY KEY (`newsletter_messageid`),
         KEY `sent` (`status`)
@@ -71,8 +72,8 @@ $query = "
         `active` enum('no','yes') NOT NULL default 'no',
         `subscribers` tinyint(4) NOT NULL,
         PRIMARY KEY (`newsletter_listid`),
-        FULLTEXT KEY (`public`),
-        FULLTEXT KEY (`active`)
+        KEY (`public`),
+        KEY (`active`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 /* Check table structure */
@@ -103,16 +104,16 @@ $query = "
         `organisation` varchar(255) NOT NULL DEFAULT '',
         `status` enum('active','inactive','unsubscribed','blacklisted') NOT NULL default 'inactive',
         `confirmed` enum('no','yes') NOT NULL default 'no',
-        `confirmed_date` date NOT NULL,
-        `unsubscribed_date` date NOT NULL,
+        `confirmed_date` bigint(20) NOT NULL,
+        `unsubscribed_date` bigint(20) NOT NULL,
         `token` varchar(255) NOT NULL DEFAULT '',
         `lists` tinyint(4) NOT NULL,
         `user` int(11) NOT NULL,
         `messages` tinyint(4) NOT NULL,
-        PRIMARY KEY (`email_eventlogid`),
-        KEY `recipient` (`recipient`),
-        KEY `event_type` (`event_type`),
-        KEY `category` (`category`)
+        PRIMARY KEY (`newsletter_subscriberid`),
+        KEY `email` (`email`),
+        KEY `status` (`status`),
+        KEY `confirmed` (`confirmed`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 /* Check table structure */
