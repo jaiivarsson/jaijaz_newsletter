@@ -1,19 +1,18 @@
 <?php
 /**
- *                    Jojo CMS
- *                ================
- *
- * Copyright 2008 Michael Cochrane <code@gardyneholt.co.nz>
- *
- * See the enclosed file license.txt for license information (LGPL). If you
- * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
- *
- * @author  Michael Cochrane <mikec@jojocms.org>
- * @license http://www.fsf.org/copyleft/lgpl.html GNU Lesser General Public License
- * @link    http://www.jojocms.org JojoCMS
- */
+     *                     Jaijaz newsletter module
+     *                ==================================
+     *
+     * Copyright 2010 Jaijaz <info@jaijaz.co.nz>
+     *
+     * See the enclosed file license.txt for license information (LGPL). If you
+     * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
+     *
+     * @author  Jai Ivarsson <jai@jaijaz.co.nz>
+     * @link    http://www.jaijaz.co.nz
+     */
 
-//////////////////////MANY2MANYFIELD//////////////////////
+//////////////////////jaijaz_newsletter_stats//////////////////////
 class Jojo_Field_jaijaz_newsletter_stats extends Jojo_Field
 {
     var $rows;
