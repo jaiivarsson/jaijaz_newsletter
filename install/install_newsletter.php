@@ -6,14 +6,14 @@ $query = "
         `newsletter_messageid` int(11) NOT NULL AUTO_INCREMENT,
         `name` varchar(255) NOT NULL DEFAULT '',
         `subject` varchar(255) NOT NULL DEFAULT '',
-        `template` int(11) NOT NULL DEFULT '0',
+        `template` int(11) NOT NULL DEFAULT '0',
         `date` bigint(20) NOT NULL,
         `body` text NOT NULL DEFAULT '',
         `body_code` text NOT NULL DEFAULT '',
         `lists` tinyint(4) NOT NULL,
         `preview` tinyint(4) NOT NULL,
         `send` tinyint(4) NOT NULL,
-        `status` enum('draft','scheduled','sent') NOT NULL default 'no',
+        `status` enum('draft','scheduled','sent') NOT NULL DEFAULT 'draft',
         `send_date` bigint(20) NOT NULL,
         `stats` tinyint(4) NOT NULL,
         PRIMARY KEY (`newsletter_messageid`),
@@ -41,8 +41,8 @@ if (isset($result['different'])) Jojo::printTableDifference($table,$result['diff
 $table = 'newsletter_message_lists';
 $query = "
     CREATE TABLE {newsletter_message_lists} (
-        `newsletter_messageid` int(11) NOT NULL DEFAULT '',
-        `newsletter_listid` int(11) NOT NULL DEFAULT '',
+        `newsletter_messageid` int(11) NOT NULL DEFAULT '0',
+        `newsletter_listid` int(11) NOT NULL DEFAULT '0',
         PRIMARY KEY (`newsletter_messageid`,`newsletter_listid`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
@@ -136,8 +136,8 @@ if (isset($result['different'])) Jojo::printTableDifference($table,$result['diff
 $table = 'newsletter_list_subscribers';
 $query = "
     CREATE TABLE {newsletter_list_subscribers} (
-        `newsletter_subscriberid` int(11) NOT NULL DEFAULT '',
-        `newsletter_listid` int(11) NOT NULL DEFAULT '',
+        `newsletter_subscriberid` int(11) NOT NULL DEFAULT '0',
+        `newsletter_listid` int(11) NOT NULL DEFAULT '0',
         PRIMARY KEY (`newsletter_subscriberid`,`newsletter_listid`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 

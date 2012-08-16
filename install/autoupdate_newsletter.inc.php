@@ -229,14 +229,19 @@ $default_fd[$table]['active'] = array(
 
 $default_fd[$table]['subscribers'] = array(
         'fd_name' => "Subscribers",
-        'fd_type' => "many2manylist",
+        'fd_type' => "many2many",
         'fd_showlabel' => "no",
+        'fd_readonly' => "1",
         'fd_help' => "This is a list of subscribers to this list. To add someone to this list go to the subscriber under edit subscribers",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",
         'fd_order' => $o++,
         'fd_tabname' => "Subscribers",
+        'fd_m2m_linktable' => "newsletter_list_subscribers",
+        'fd_m2m_linkitemid' => "newsletter_listid",
+        'fd_m2m_linkcatid' => "newsletter_subscriberid",
+        'fd_m2m_cattable' => "newsletter_subscribers",
     );
 
 
@@ -323,7 +328,7 @@ $default_fd[$table]['status'] = array(
 $default_fd[$table]['confirmed'] = array(
         'fd_name' => "Confirmed",
         'fd_type' => "unixdate",
-        'fd_readonly' => "yes",
+        'fd_readonly' => "1",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",
@@ -334,7 +339,7 @@ $default_fd[$table]['confirmed'] = array(
 $default_fd[$table]['confirmed_date'] = array(
         'fd_name' => "Confirmed date",
         'fd_type' => "unixdate",
-        'fd_readonly' => "yes",
+        'fd_readonly' => "1",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",

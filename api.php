@@ -21,7 +21,6 @@ $_provides['fieldTypes'] = array(
         'jaijaz_newsletter_send'        => 'Jaijaz Newletter - Send',
         'jaijaz_newsletter_stats'       => 'Jaijaz Newletter - Stats',
         'jaijaz_newsletter_messages'    => 'Jaijaz Newletter - Messages List',
-        'many2manylist'                 => 'Many 2 Many List (read only)',
         'userloginlink'                 => 'User Login Link details'
 );
 
