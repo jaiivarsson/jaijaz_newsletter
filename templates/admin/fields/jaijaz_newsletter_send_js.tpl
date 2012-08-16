@@ -3,10 +3,10 @@ $(document).ready(function(){ldelim}
         var button = $(this);
         button.val('Processing...');
         var data = {ldelim}
-            id: {$newsletterid},
-            scheduledate: $('#fm_{$fd_field}_schedule').val()
+            id: {if $newsletterid}{$newsletterid}{else}0{/if},
+            scheduledate: $('#fm_{$fd_field}').val()
         {rdelim};
-        $.post(
+        parent.$.post(
             '{$SITEURL}/json/jaijaz_newsletter_send.php',
             data,
             function(data){ldelim}

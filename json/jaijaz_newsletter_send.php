@@ -22,19 +22,14 @@ if (!$page->perms->hasPerm($_USERGROUPS, 'view')) {
 $id = Util::getFormData('id');
 $scheduledate = Util::getFormData('scheduledate');
 if (!$id || !$scheduledate) {
+    echo "not given the data";
     exit;
 }
-$scheduleTimestamp = strtotime($scheduledate);
-$return = array();
-$return['result'] = Jojo_Plugin_Jaijaz_newsletter::sendNewsletter($id, $scheduleTimestamp);
 
-if ($return['result']) {
-    if ($scheduleTimestamp <= time() {
-        $return['message'] = "Sending";
-    } else {
-        $return['message'] = "Scheduled";
-    }
-} else {
-    $return['message'] = "Schedule Send Now";
-}
+$scheduleTimestamp = strtotime($scheduledate);
+
+$return = Jojo_Plugin_Jaijaz_newsletter::sendNewsletter($id, $scheduleTimestamp);
+var_dump($return);
+header('Content-type: application/json');
+echo json_encode($return);
 exit;

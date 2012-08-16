@@ -29,21 +29,13 @@ class Jojo_Field_jaijaz_newsletter_stats extends Jojo_Field
         global $smarty;
         $smarty->assign('fd_field', $this->fd_field);
         $smarty->assign('newsletterid', $this->table->getRecordID());
-        $smarty->assign('status', $this->table->getValue('status'));
+        $smarty->assign('status', $this->table->getFieldValue('status'));
         $smarty->assign('value', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));
         return $smarty->fetch('admin/fields/jaijaz_newsletter_stats.tpl');
     }
 
     function setvalue($newvalue)
     {
-    }
-    
-    function displayJs()
-    {
-        global $smarty;
-        $js = $smarty->fetch('admin/fields/unixdate_js.tpl');
-        $js .= $smarty->fetch('admin/fields/jaijaz_newsletter_send_js.tpl');
-        return $js;
     }
 
 }
