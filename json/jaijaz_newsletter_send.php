@@ -24,12 +24,16 @@ $scheduledate = Util::getFormData('scheduledate');
 if (!$id || !$scheduledate) {
     exit;
 }
-
+$scheduleTimestamp = strtotime($scheduledate);
 $return = array();
-$return['result'] = Jojo_Plugin_Jaijaz_newsletter::sendNewsletter($id, $scheduledate);
+$return['result'] = Jojo_Plugin_Jaijaz_newsletter::sendNewsletter($id, $scheduleTimestamp);
 
 if ($return['result']) {
-    $return['message'] = "Scheduled";
+    if ($scheduleTimestamp <= time() {
+        $return['message'] = "Sending";
+    } else {
+        $return['message'] = "Scheduled";
+    }
 } else {
     $return['message'] = "Schedule Send Now";
 }

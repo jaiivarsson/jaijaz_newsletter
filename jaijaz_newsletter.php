@@ -82,6 +82,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         if ($scheduledate <= time())
             Jojo_Plugin_Jaijaz_emailer::sendQueuedEmails();
         
+        return true;
     }
     
     /*
