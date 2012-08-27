@@ -33,6 +33,17 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         //Assume the URL is correct
         return _PROTOCOL.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     }
+
+    /** 
+     * function to process events for the newsletter
+     * 
+     * @param $data array
+     * 
+     * @return $success
+     */
+    function processEvent($data) {
+        var_dump('h');
+    }
     
     /** 
      * compile the html for the newsletter

@@ -30,7 +30,7 @@ $_provides['pluginClasses'] = array(
         'Jojo_Plugin_newsletter_subscription' => 'Newsletter Subscriber',
         'Jojo_Plugin_newsletter_unsubscriber' => 'Newsletter Unsubscriber'
         );
-*/
+ */
 
 /* Register URI handlers */
 /* Jojo::registerURI(null, 'jojo_plugin_jojo_newsletter', 'isUrl'); */
