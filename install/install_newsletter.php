@@ -16,6 +16,14 @@ $query = "
         `status` enum('draft','scheduled','sent') NOT NULL DEFAULT 'draft',
         `send_date` bigint(20) NOT NULL,
         `stats` tinyint(4) NOT NULL,
+        `processed` tinyint(4) NOT NULL,
+        `dropped` tinyint(4) NOT NULL,
+        `delivered` tinyint(4) NOT NULL,
+        `bounce` tinyint(4) NOT NULL,
+        `open` tinyint(4) NOT NULL,
+        `click` tinyint(4) NOT NULL,
+        `spamreport` tinyint(4) NOT NULL,
+        `unsubscribe` tinyint(4) NOT NULL,
         PRIMARY KEY (`newsletter_messageid`),
         KEY `sent` (`status`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8";

@@ -164,8 +164,68 @@ $default_fd[$table]['stats'] = array(
         'fd_tabname' => "5. Stats",
     );
 
+$default_fd[$table]['processed'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
 
+$default_fd[$table]['dropped'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
 
+$default_fd[$table]['delivered'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
+
+$default_fd[$table]['bounce'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
+
+$default_fd[$table]['click'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
+
+$default_fd[$table]['spamreport'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
+
+$default_fd[$table]['unsubscribe'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
 
 
 
