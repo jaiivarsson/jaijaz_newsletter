@@ -92,7 +92,7 @@ $default_fd[$table]['body'] = array(
 $default_fd[$table]['body_code'] = array(
         'fd_name' => "Intro",
         'fd_type' => "texteditor",
-        'fd_options' => "intro",
+        'fd_options' => "body",
         'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );

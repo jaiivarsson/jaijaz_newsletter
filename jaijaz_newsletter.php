@@ -66,6 +66,26 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
     }
     
     /** 
+     * compile the text for the newsletter
+     * 
+     * @param $newsletter array
+     * 
+     * @return $text string
+     */
+    function assementText($newsletter = false)
+    {
+        if (!$newsletter)
+            return "";
+        
+        $html = "";
+        // TODO: check other plugins for content
+        
+        $html .= $newsletter['body'];
+        // return the html
+        return $html;
+    }
+    
+    /** 
      * send a newsletter to the emailer plugin to schedule the sending
      * 
      * @param $id int the newsletter id to be scheduled
@@ -91,7 +111,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         
         // get the list of people to receive the newsletter
         $receiptiants = Jojo::selectQuery("SELECT DISTINCT s.* FROM {newsletter_subscribers} s LEFT JOIN {newsletter_list_subscribers} ls ON s.newsletter_subscriberid = ls.newsletter_subscriberid LEFT JOIN {newsletter_message_lists} ml ON ls.newsletter_listid = ml.newsletter_listid WHERE ml.newsletter_messageid = ?", $id);
-        var_dump($receiptiants);
+        //var_dump($receiptiants);
         if (!$receiptiants) {
             $return['result'] = false;
             $return['message'] = "Couldn't find and people to send it to. Make sure you have selected a list.";
@@ -151,7 +171,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         $email->receiverid      = $recipiant['newsletter_subscriberid'];
         $email->messageid       = $newsletter['newsletter_messageid'];
         $email->plugin          = "jaijaz_newsletter";
-        $email->to_address      = $recipiant['newsletter_subscriberid'];
+        $email->to_address      = $recipiant['email'];
         $email->to_name         = $recipiant['firstname'] . " " . $recipiant['lastname'];
         $email->from_address    = Jojo::either(Jojo::getOption('jaijaz_newsletter_fromaddress'), _FROMADDRESS, _CONTACTADDRESS, _WEBMASTERADDRESS);
         $email->from_name       = Jojo::either(Jojo::getOption('jaijaz_newsletter_fromname'), _FROMNAME, _CONTACTNAME, _SITETITLE);
@@ -161,7 +181,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         $email->merge_fields    = array( 'firstname' => $recipiant['firstname'] );
         $email->smtpapi         = array( 'newsletter_messageid' => $newsletter['newsletter_messageid'] );
         $email->send_embargo    = $scheduledate;
-        
+        //var_dump($email);
         // check not a duplicate
         if ($email->checkNotDuplicate()) {
             // save object
