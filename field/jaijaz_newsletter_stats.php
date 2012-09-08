@@ -26,8 +26,13 @@ class Jojo_Field_jaijaz_newsletter_stats extends Jojo_Field
     function displayedit()
     {
         global $smarty;
+        $id = $this->table->getRecordID();
+        $newsletter = Jojo::selectRow("SELECT * FROM {newsletter_messages} WHERE newsletter_messageid = ?", $id);
+        $stats = Jojo_Plugin_jaijaz_newsletter::getStats($newsletter);
+
         $smarty->assign('fd_field', $this->fd_field);
-        $smarty->assign('newsletterid', $this->table->getRecordID());
+        $smarty->assign('newsletterid', $id);
+        $smarty->assign('stats', $stats);
         $smarty->assign('status', $this->table->getFieldValue('status'));
         $smarty->assign('value', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));
         return $smarty->fetch('admin/fields/jaijaz_newsletter_stats.tpl');

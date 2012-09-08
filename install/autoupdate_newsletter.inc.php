@@ -200,6 +200,15 @@ $default_fd[$table]['bounce'] = array(
         'fd_tabname' => "5. Stats",
     );
 
+$default_fd[$table]['open'] = array(
+        'fd_type' => "hidden",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "5. Stats",
+    );
+
 $default_fd[$table]['click'] = array(
         'fd_type' => "hidden",
         'fd_size' => "0",

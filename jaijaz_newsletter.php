@@ -42,7 +42,19 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
      * @return $success
      */
     function processEvent($data) {
-        var_dump('h');
+        $newsletter = Jojo::selectRow("SELECT * FROM {newsletter_messages} WHERE newsletter_messageid = ?", $data['newsletter_messageid']);
+        if (!$newsletter) {
+            return false;
+        }
+        $query = "";
+        if ($data['event'] != 'open') {
+            $query = "UPDATE {newsletter_messages} SET " . $data['event'] . " = " . $data['event'] . "+1 WHERE newsletter_messageid = ?";
+        } elseif ($data['justOpened'] === true) {
+            $query = "UPDATE {newsletter_messages} SET open = open +1 WHERE newsletter_messageid = ?";
+        }
+        if ($query != "") {
+            Jojo::updateQuery($query, $data['newsletter_messageid']);
+        }
     }
     
     /** 
@@ -147,7 +159,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
     /**
      * queue an email into the emailer plugin
      * 
-     * @param $newslettter array
+     * @param $newsletter array
      * @param $recipiant array
      * 
      */
@@ -171,7 +183,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         $email->receiverid      = $recipiant['newsletter_subscriberid'];
         $email->messageid       = $newsletter['newsletter_messageid'];
         $email->plugin          = "jaijaz_newsletter";
-        $email->to_address      = $recipiant['email'];
+        $email->to_address      = $recipiant['emal'];
         $email->to_name         = $recipiant['firstname'] . " " . $recipiant['lastname'];
         $email->from_address    = Jojo::either(Jojo::getOption('jaijaz_newsletter_fromaddress'), _FROMADDRESS, _CONTACTADDRESS, _WEBMASTERADDRESS);
         $email->from_name       = Jojo::either(Jojo::getOption('jaijaz_newsletter_fromname'), _FROMNAME, _CONTACTNAME, _SITETITLE);
@@ -189,6 +201,43 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         } else {
             return false;
         }
+    }
+
+    /**
+     * create an array of stats for a newsletter mesage
+     * 
+     * @param $newsletter array
+     * @param $stats array
+     * 
+     */
+    function getStats($newsletter = false)
+    {
+        if (!$newsletter)
+            return false;
+
+        $stats = array();
+        // get the number of messages from the email_queue
+        $sent = Jojo::selectQuery("SELECT email_queueid FROM {email_queue} WHERE messageid = ? AND plugin = ?", array($newsletter['newsletter_messageid'], 'jaijaz_newsletter'));
+        $stats['sent'] = count($sent);
+
+        // get the event type values and set the percentages were needed
+        $stats['processed'] = $newsletter['processed'];
+        $stats['processedPercent'] = ($newsletter['processed'] / $stats['sent']) * 100;
+        $stats['dropped'] = $newsletter['dropped'];
+        $stats['droppedPercent'] = ($newsletter['dropped'] / $stats['sent']) * 100;
+        $stats['delivered'] = $newsletter['delivered'];
+        $stats['deliveredPercent'] = ($newsletter['delivered'] / $stats['sent']) * 100;
+        $stats['bounce'] = $newsletter['bounce'];
+        $stats['bouncePercent'] = ($newsletter['bounce'] / $stats['sent']) * 100;
+        $stats['open'] = $newsletter['open'];
+        $stats['openPercent'] = ($newsletter['open'] / $stats['sent']) * 100;
+        $stats['click'] = $newsletter['click'];
+        $stats['spamreport'] = $newsletter['spamreport'];
+        $stats['spamreportPercent'] = ($newsletter['spamreport'] / $stats['sent']) * 100;
+        $stats['unsubscribe'] = $newsletter['unsubscribe'];
+        $stats['unsubscribePercent'] = ($newsletter['unsubscribe'] / $stats['sent']) * 100;
+
+        return $stats;
     }
 
 }
