@@ -127,7 +127,8 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             return "";
         global $smarty;
 
-        // TODO: check other plugins for content
+        /* Apply filter to allow other plugins to alter the newsletter */
+        $newsletter = Jojo::applyFilter('jaijaz_newsletter_html', $newsletter);
         
         $smarty->assign('newsletter', $newsletter);
         $html = $smarty->fetch('newsletter_body.tpl');
@@ -136,6 +137,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
     }
     
     /** 
+     * TODO: complete so that text version is a proper text version
      * compile the text for the newsletter
      * 
      * @param $newsletter array
@@ -148,7 +150,9 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             return "";
         
         $html = "";
-        // TODO: check other plugins for content
+        // TODO: get text version working
+        /* Apply filter to allow other plugins to alter the newsletter */
+        // $newsletter = Jojo::applyFilter('jaijaz_newsletter_text', $newsletter);
         
         $html .= $newsletter['body'];
         // return the html
