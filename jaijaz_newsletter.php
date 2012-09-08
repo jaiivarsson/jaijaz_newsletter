@@ -154,9 +154,9 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
                 $return['message'] = "Newsletter has not started sending";
                 $return['result'] = false;
             }
-            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send = ? WHERE newsletter_messageid = ?", array('sent', $scheduledate, $data['newsletter_messageid']));
+            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('sent', $scheduledate, $data['newsletter_messageid']));
         } else {
-            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $data['newsletter_messageid']));
+            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $data['newsletter_messageid']));
         }
 
         
