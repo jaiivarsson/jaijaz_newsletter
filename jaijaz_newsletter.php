@@ -46,6 +46,9 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         if (!$newsletter) {
             return false;
         }
+        if ($newsletter['status'] == "queued") {
+            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ? WHERE newsletter_messageid = ?", array('sent', $data['newsletter_messageid']));
+        }
         $query = "";
         if ($data['event'] != 'open') {
             $query = "UPDATE {newsletter_messages} SET " . $data['event'] . " = " . $data['event'] . "+1 WHERE newsletter_messageid = ?";
@@ -151,7 +154,11 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
                 $return['message'] = "Newsletter has not started sending";
                 $return['result'] = false;
             }
+            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send = ? WHERE newsletter_messageid = ?", array('sent', $scheduledate, $data['newsletter_messageid']));
+        } else {
+            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $data['newsletter_messageid']));
         }
+
         
         return $return;
     }
