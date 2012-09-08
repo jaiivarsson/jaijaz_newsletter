@@ -1,11 +1,13 @@
 {if $status == 'sent'}
 	<table class="table table-striped">
-		<tbody>
+		<thead>
 			<tr>
-				<td><strong>Stat type</strong></td>
-				<td><strong>Number</strong></td>
-				<td><strong>Percentage</strong></td>
+				<th>Stat type</th>
+				<th>Number</th>
+				<th>Percentage</th>
 			</tr>
+		</thead>
+		<tbody>
 			<tr>
 				<td>Sent</td>
 				<td>{$stats.sent}</td>
