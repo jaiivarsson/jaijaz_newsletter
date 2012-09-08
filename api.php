@@ -24,16 +24,17 @@ $_provides['fieldTypes'] = array(
         'userloginlink'                 => 'User Login Link details'
 );
 
-/*
+
 $_provides['pluginClasses'] = array(
-        'Jojo_Plugin_Jojo_Newsletter' => 'Newsletter View',
-        'Jojo_Plugin_newsletter_subscription' => 'Newsletter Subscriber',
-        'Jojo_Plugin_newsletter_unsubscriber' => 'Newsletter Unsubscriber'
+        'Jojo_Plugin_Jaijaz_Newsletter' => 'Jaijaz Newsletter View pages',
+        'Jojo_Plugin_Jaijaz_newsletter_subscription' => 'Jaijaz Newsletter Subscriber',
+        'Jojo_Plugin_Jaijaz_newsletter_unsubscriber' => 'Jaijaz Newsletter Unsubscriber',
+        'Jojo_Plugin_Jaijaz_newsletter_admin_stats' => 'Jaijaz Newsletter Admin Stats'
         );
- */
+ 
 
 /* Register URI handlers */
-/* Jojo::registerURI(null, 'jojo_plugin_jojo_newsletter', 'isUrl'); */
+Jojo::registerUri('/newsletters/[id:integer]/[string]',  'Jojo_Plugin_Jaijaz_Newsletter');
 
 
 $_options[] = array(

@@ -19,12 +19,47 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
     {
         global $smarty;
         $content = array();
+        $id = Jojo::getFormData('id', 0);
 
-        //$content['title']      = 'TITLE HERE';     //optional title, will be displayed as the H1 heading, amongst other uses. Defaults to whatever was entered in the admin section.
-        //$content['seotitle']   = 'SEO TITLE HERE'; //optional SEO title, will be displayed as the main title for the page, and in Google results. Defaults to whatever was entered in the admin section.
-        //$content['css']        = '';               //need some CSS code just for this page? Add the code to this variable and it will be included in the document head, just for this page. <style> tags are not required.
-        //$content['javascript'] = '';               //Same as for CSS - <script> tags are not required.
-        $content['content']  = $smarty->fetch('empty_plugin.tpl');
+        if ($id) {
+            // check to see if this came from index page. if so then provide a back link to it
+            $referer = $_SERVER['HTTP_REFERER'];
+            if (strstr($referer, _SITEURL)) {
+                $smarty->assign('referer', $referer);
+                $content['content'] = $smarty->fetch('newsletter_online_header.tpl');
+            } else {
+                $content['content'] = '';
+            }
+
+            // get the newsletter and display it on the page with a back link
+            $newsletter = Jojo::selectRow("SELECT * FROM {newsletter_messages} WHERE newsletter_messageid = ?", $id);
+            $smarty->assign('newsletter', $newsletter);
+
+            $body = $smarty->fetch('newsletter_body.tpl');
+            $smarty->assign('content', $body);
+            
+            // get the template and merge it in
+            $template = Jojo::selectRow("SELECT * FROM {email_template} WHERE email_templateid = ?", $newsletter['template']);
+            $content['content'] .= $smarty->fetch($template['tpl_filename']);
+            
+            // send it to the browser
+            header('Content-Type: text/html');
+            header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+            header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+            echo $content['content'];
+            exit;
+
+        } else {
+            // get all the newsletter and display them in a list
+            $newsletters = Jojo::selectQuery("SELECT * FROM {newsletter_messages} WHERE status = ?", 'sent');
+            foreach ($newsletters as $n => $newsletter) {
+                $newsletters[$n]['url'] = Jojo::rewrite('newsletters', $newsletter['newsletter_messageid'], $newsletter['subject'], '');
+            }
+            $smarty->assign('newsletters', $newsletters);
+
+            $content['content']  = $smarty->fetch('newsletter_index.tpl');
+        }
+        
         return $content;
     }
 

@@ -26,6 +26,9 @@ class Jojo_Field_jaijaz_newsletter_preview extends Jojo_Field
     function displayedit()
     {
         global $smarty;
+        $subject = $this->table->getFieldValue('subject');
+        $previewUrl = Jojo::rewrite('newsletters', $this->table->getRecordID(), $subject, '');
+        $smarty->assign('previewUrl',$previewUrl);
         $smarty->assign('fd_field',$this->fd_field);
         $smarty->assign('newsletterid', $this->table->getRecordID());
         $smarty->assign('value', htmlentities($this->value, ENT_COMPAT, 'UTF-8'));

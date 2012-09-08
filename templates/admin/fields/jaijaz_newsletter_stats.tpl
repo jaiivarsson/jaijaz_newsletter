@@ -37,7 +37,7 @@
 				<td>{$stats.spamreportPercent}%</td>
 			</tr>
 			<tr>
-				<td>Unscribed</td>
+				<td>Unsubcribed</td>
 				<td>{$stats.unsubscribe}</td>
 				<td>{$stats.unsubscribePercent}%</td>
 			</tr>
