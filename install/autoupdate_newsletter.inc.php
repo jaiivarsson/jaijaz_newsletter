@@ -429,7 +429,8 @@ $default_fd[$table]['confirmed_date'] = array(
 
 $default_fd[$table]['unsubscribed_date'] = array(
         'fd_name' => "Unsubscribed date",
-        'fd_type' => "readonly",
+        'fd_type' => "unixdate",
+        'fd_readonly' => "1",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",

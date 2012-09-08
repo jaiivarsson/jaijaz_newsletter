@@ -125,11 +125,12 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
     {
         if (!$newsletter)
             return "";
-        
-        $html = "";
+        global $smarty;
+
         // TODO: check other plugins for content
         
-        $html .= $newsletter['body'];
+        $smarty->assign('newsletter', $newsletter);
+        $html = $smarty->fetch('newsletter_body.tpl');
         // return the html
         return $html;
     }
@@ -165,7 +166,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
     function sendNewsletter($id = 0, $scheduledate = false)
     {
         if (!$scheduledate)
-            $scheduledate = time();
+            $scheduledate = strtotime('-1 second');
         
         // setup the return array
         $return = array();
@@ -179,7 +180,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             
         
         // get the list of people to receive the newsletter
-        $receiptiants = Jojo::selectQuery("SELECT DISTINCT s.* FROM {newsletter_subscribers} s LEFT JOIN {newsletter_list_subscribers} ls ON s.newsletter_subscriberid = ls.newsletter_subscriberid LEFT JOIN {newsletter_message_lists} ml ON ls.newsletter_listid = ml.newsletter_listid WHERE ml.newsletter_messageid = ?", $id);
+        $receiptiants = Jojo::selectQuery("SELECT DISTINCT s.* FROM {newsletter_subscribers} s LEFT JOIN {newsletter_list_subscribers} ls ON s.newsletter_subscriberid = ls.newsletter_subscriberid LEFT JOIN {newsletter_message_lists} ml ON ls.newsletter_listid = ml.newsletter_listid WHERE s.status = ? AND ml.newsletter_messageid = ?", array('active', $id));
         //var_dump($receiptiants);
         if (!$receiptiants) {
             $return['result'] = false;
@@ -190,27 +191,24 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         // loop through receipiants and schedule the email
         foreach ($receiptiants as $r => $recipiant) {
             $res = self::queueNewsletter($newsletter, $recipiant, $scheduledate);
-            if ($res) {
-                $return['message'] = "Newsletter has been queued";
-                $return['result'] = true;
-            } else {
-                $return['message'] = "Newsletter has not been queued";
-                $return['result'] = false;
-            }
+            
         }
+        $return['message'] = "Newsletter has been queued";
+        $return['result'] = true;
         // if scheduled date in the past call the send process
         if ($scheduledate <= time()) {
             $res = Jojo_Plugin_Jaijaz_emailer::sendQueuedEmails();
             if ($res) {
                 $return['message'] = "Newsletter has started sending";
                 $return['result'] = true;
+                Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('sent', $scheduledate, $id));
             } else {
                 $return['message'] = "Newsletter has not started sending";
                 $return['result'] = false;
+                Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $id));
             }
-            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('sent', $scheduledate, $data['newsletter_messageid']));
         } else {
-            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $data['newsletter_messageid']));
+            Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $id));
         }
 
         
@@ -251,7 +249,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         $email->templateid      = $newsletter['template'];
         $email->subject         = $newsletter['subject'];
         $email->message_html    = self::assementHtml($newsletter);
-        $email->merge_fields    = array( 'firstname' => $recipiant['firstname'] );
+        $email->merge_fields    = array( 'firstname' => $recipiant['firstname'], 'unsubscribe' => '' );
         $email->smtpapi         = array( 'newsletter_messageid' => $newsletter['newsletter_messageid'] );
         $email->send_embargo    = $scheduledate;
         //var_dump($email);

@@ -22,13 +22,13 @@ if (!count($data)) {
 
 
 /* add newsletter unsubscribe page */
-/*
-$data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_link='Jojo_Plugin_Jojo_Newsletter_Unsubscribe'");
+
+$data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_link='Jojo_Plugin_Jaijaz_newsletter_unsubscribe'");
 if (!count($data)) {
     echo "Adding <b>Unsubscribe From Newsletter</b> Page to menu<br />";
-    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Unsubscribe From Newsletter', pg_link='Jojo_Plugin_Jojo_Newsletter_Unsubscribe', pg_url='unsubscribe'");
+    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Unsubscribe', pg_link='Jojo_Plugin_Jaijaz_newsletter_unsubscribe', pg_url='unsubscribe', pg_mainnav = 'no'");
 }
-*/
+
 
 /* add newsletter viewing page */
 

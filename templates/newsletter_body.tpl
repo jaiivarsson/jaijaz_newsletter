@@ -3,4 +3,7 @@
   <tr>
     <td width="600" valign="top">{$newsletter.body}</td>
   </tr>
+  <tr>
+    <td width="600" valign="top">[[unsubscribe]]</td>
+  </tr>
 </table>
