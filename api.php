@@ -28,14 +28,19 @@ $_provides['fieldTypes'] = array(
 
 $_provides['pluginClasses'] = array(
         'Jojo_Plugin_Jaijaz_Newsletter' => 'Jaijaz Newsletter View pages',
-        'Jojo_Plugin_Jaijaz_newsletter_subscription' => 'Jaijaz Newsletter Subscriber',
+        'Jojo_Plugin_Jaijaz_newsletter_subscribe' => 'Jaijaz Newsletter Subscriber',
         'Jojo_Plugin_Jaijaz_newsletter_unsubscriber' => 'Jaijaz Newsletter Unsubscriber',
         'Jojo_Plugin_Jaijaz_newsletter_admin_stats' => 'Jaijaz Newsletter Admin Stats'
         );
- 
+
+// subscribe hook
+Jojo::addHook('contact_form_success', 'contact_form_success', 'jaijaz_newsletter_subscribe');
+
+Jojo::addFilter('formfields_last', 'formfields_last', 'jaijaz_newsletter_subscribe');
 
 /* Register URI handlers */
 Jojo::registerUri('/newsletters/[id:integer]/[string]',  'Jojo_Plugin_Jaijaz_Newsletter');
+Jojo::registerUri('/subscription/[action:string]/[token:[a-zA-Z0-9]{20}]',  'Jojo_Plugin_Jaijaz_newsletter_subscribe');
 
 
 $_options[] = array(
@@ -60,156 +65,4 @@ $_options[] = array(
     'plugin'    => 'jaijaz_newsletter'
 );
 
-/*
-$_options[] = array(
-    'id'        => 'phplist_notifications',
-    'category'  => 'Newsletter',
-    'label'     => 'Subscribe/Unsubscribe notifications',
-    'description' => 'Address for notifications to be sent to',
-    'type'      => 'text',
-    'default'   => '',
-    'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
 
-);
-
-$_options[] = array(
-    'id'        => 'phplist_notifications_name',
-    'category'  => 'Newsletter',
-    'label'     => 'Subscribe/Unsubscribe notifications - Name',
-    'description' => 'Name of the person to whom notifications to be sent to',
-    'type'      => 'text',
-    'default'   => '',
-    'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
-
-);
-
-$_options[] = array(
-  'id'        => 'phplist_notifications_webmaster',
-  'category'  => 'Newsletter',
-  'label'     => 'Send Subscribe/Unsubscribe notifications to the Webmaster?',
-  'description' => '',
-  'type'        => 'radio',
-  'default'     => 'yes',
-  'options'     => 'yes,no',
-  'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-  'id'        => 'phplist_unsubscribe_behaviour',
-  'category'  => 'Newsletter',
-  'label'     => 'On unsubscribe, delete',
-  'description' => 'Any: delete unsubscribing user from the system regardless, Newsletter: delete user if they have no login (newletter only user) otherwise just remove mailing list entries, None: leave user, but remove from mailing lists',
-  'type'        => 'radio',
-  'default'     => 'newsletteruser',
-  'options'     => 'any,newsletteruser,none',
-  'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-    'id'        => 'phplist_phplocation',
-    'category'  => 'Newsletter',
-    'label'     => 'PHP Location',
-    'description' => 'This is the location where PHP is on your server. Use ssh "whereis php", to find path. This is needed so that the send buttons can work.',
-    'type'      => 'text',
-    'default'   => '/usr/bin/php',
-    'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-    'id'          => 'phplist_includeimages',
-    'category'    => 'Newsletter',
-    'label'       => 'Article Images',
-    'description' => 'Include article images (if they have them) alongside the text snippet in the email',
-    'type'        => 'radio',
-    'default'     => 'yes',
-    'options'     => 'yes,no',
-    'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-    'id'        => 'phplist_imagesize',
-    'category'  => 'Newsletter',
-    'label'     => 'Article image size',
-    'description' => 'Sizing for article images in snippets - eg v25000, s100, w200',
-    'type'      => 'text',
-    'default'   => 'v25000',
-    'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-    'id'        => 'phplist_bannerimage',
-    'category'  => 'Newsletter',
-    'label'     => 'Banner Image',
-    'description' => 'Use the Banner Image manager to pick images for the email header',
-    'type'        => 'radio',
-    'default'     => 'yes',
-    'options'     => 'yes,no',
-    'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-  'id'        => 'phplist_subscription_success_message',
-  'category'  => 'Newsletter',
-  'label'     => 'Subscription Success Message',
-  'description' => 'The text of the success message shown on the screen',
-  'type'        => 'textarea',
-  'default'     => '',
-  'options'     => '',
-  'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-  'id'        => 'phplist_thankyou',
-  'category'  => 'Newsletter',
-  'label'     => 'Is a thankyou email sent?',
-  'description' => 'Set whether to send, then set the text of the email',
-  'type'        => 'radio',
-  'default'     => 'no',
-  'options'     => 'yes,no',
-  'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-  'id'        => 'phplist_thankyou_email_text',
-  'category'  => 'Newsletter',
-  'label'     => 'Text of subscription thankyou email',
-  'description' => 'The text of the thankyou email.',
-  'type'        => 'textarea',
-  'default'     => 'Thank you for subscribing to our newsletter. We look forward to keeping in contact with you.',
-  'options'     => '',
-  'plugin'    => 'jojo_newsletter_phplist'
-);
-
-$_options[] = array(
-    'id'        => 'newslettercss',
-    'category'  => 'Newsletter',
-    'label'     => 'CSS styles',
-    'description' => 'newline separated css styles in the format tag=style',
-    'type'      => 'textarea',
-    'default'   => "",
-    'options'   => '',
-    'plugin'    => 'jojo_newsletter_phplist'
-
-);
-
-$_options[] = array(
-  'id'        => 'onlinenews_display',
-  'category'  => 'Newsletter',
-  'label'     => 'Display online version as',
-  'description' => 'Show the newsletter in the content area of the site like any other page content (inline) or as a standalone page as it appears in the email',
-  'type'        => 'radio',
-  'default'     => 'inline',
-  'options'     => 'inline,standalone',
-  'plugin'    => 'jojo_newsletter_phplist'
-);
-*/
-
-
-/* $prefix = JOJO_Plugin_Jojo_Admin_Newsletter_Statistics::_getPrefix(); */
-/* Jojo::registerURI("$prefix/[id:integer]/[.*]", 'Jojo_Plugin_Jojo_admin_newsletter_statistics'); // "morenewsletterstatistics/123/name-of-quote/" */
-/* Jojo::registerURI("$prefix/[id:integer]", 'Jojo_Plugin_Jojo_admin_newsletter_statistics'); // "morenewsletterstatistics/123" */
-/* Jojo::registerURI("$prefix/[url:string]", 'Jojo_Plugin_Jojo_admin_newsletter_statistics'); // "morenewsletterstatistics/url" */

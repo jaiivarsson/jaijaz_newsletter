@@ -244,7 +244,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         $email->receiverid      = $recipiant['newsletter_subscriberid'];
         $email->messageid       = $newsletter['newsletter_messageid'];
         $email->plugin          = "jaijaz_newsletter";
-        $email->to_address      = $recipiant['emal'];
+        $email->to_address      = $recipiant['email'];
         $email->to_name         = $recipiant['firstname'] . " " . $recipiant['lastname'];
         $email->from_address    = Jojo::either(Jojo::getOption('jaijaz_newsletter_fromaddress'), _FROMADDRESS, _CONTACTADDRESS, _WEBMASTERADDRESS);
         $email->from_name       = Jojo::either(Jojo::getOption('jaijaz_newsletter_fromname'), _FROMNAME, _CONTACTNAME, _SITETITLE);

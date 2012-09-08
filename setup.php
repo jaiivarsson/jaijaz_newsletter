@@ -13,13 +13,13 @@
  */
 
 /* add newsletter subscription page */
-/*
-$data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_link='Jojo_Plugin_Jojo_Newsletter_Subscribe'");
+
+$data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_link='Jojo_Plugin_Jaijaz_newsletter_subscribe'");
 if (!count($data)) {
-    echo "Adding <b>Subscribe to a Newsletter</b> Page to menu<br />";
-    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Subscribe to a Newsletter', pg_link='Jojo_Plugin_Jojo_Newsletter_Subscribe', pg_url='subscribe'");
+    echo "Adding <b>Subscription</b> Page to menu<br />";
+    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Subscription', pg_link='Jojo_Plugin_Jaijaz_newsletter_subscribe', pg_url='subscription', pg_status='hidden', pg_parent = ?", $_NOT_ON_MENU_ID);
 }
-*/
+
 
 /* add newsletter unsubscribe page */
 /*
@@ -83,4 +83,16 @@ $data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_url='admin/newslet
 if (!count($data)) {
     echo "Adding <b>Edit Subscribers</b> Page to menu<br />";
     Jojo::insertQuery("INSERT INTO {page} SET pg_title='Newsletter Preview', pg_link='jojo_plugin_jaijaz_newsletter_preview', pg_url='admin/newsletter/preview', pg_parent = ?, pg_order = 5, pg_mainnav = 'no'", $_ADMIN_NEWSLETTER_ID);
+}
+
+/* setup the subscribe form */
+if (!Jojo::selectRow("SELECT pageid FROM {page} WHERE pg_url='subscribe'")) {
+    $formpageid = Jojo::insertQuery("INSERT INTO {page} SET pg_title='Subscribe', pg_link='jojo_plugin_jojo_contact', pg_url='subscribe', pg_mainnav = 'no'");
+    $formid = Jojo::insertQuery("INSERT INTO {form} (`form_name`, `form_page_id`, `form_success_message`) VALUES ('Newsletter Subscribe', $formpageid, 'Thank you. An email confirmation has been sent to you.')");
+    Jojo::insertQuery("INSERT INTO {formfield} (`ff_form_id`, `ff_fieldset`, `ff_fieldname`, `ff_display`, `ff_required`, `ff_validation`, `ff_type`, `ff_size`, `ff_value`, `ff_options`, `ff_rows`, `ff_cols`, `ff_description`, `ff_class`, `ff_is_email`, `ff_is_name`, `ff_showlabel`, `ff_order`) VALUES
+        ($formid, '', 'firstname', 'First Name', 1, '', 'text', 30, '', '', 0, 0, '', '', 0, 1, 1, 0),
+        ($formid, '', 'lastname', 'Last Name', 1, '', 'text', 30, '', '', 0, 0, '', '', 0, 1, 1, 1),
+        ($formid, '', 'email', 'Email', 1, 'email', 'text', 30, '', '', 0, 0, '', '', 1, 0, 1, 2),
+        ($formid, '', 'organisation', 'Organisation', 0, '', 'text', 30, '', '', 0, 0, '', '', 0, 0, 1, 3)"
+        );
 }
