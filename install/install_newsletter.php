@@ -12,6 +12,7 @@ $query = "
         `body_code` text NOT NULL DEFAULT '',
         `lists` tinyint(4) NOT NULL,
         `preview` tinyint(4) NOT NULL,
+        `sendpreview` tinyint(4) NOT NULL,
         `send` tinyint(4) NOT NULL,
         `status` enum('draft','scheduled','sent') NOT NULL DEFAULT 'draft',
         `send_date` bigint(20) NOT NULL,

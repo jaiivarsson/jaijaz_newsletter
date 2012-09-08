@@ -18,6 +18,7 @@
 
 $_provides['fieldTypes'] = array(
         'jaijaz_newsletter_preview'     => 'Jaijaz Newletter - Preview',
+        'jaijaz_newsletter_sendpreview' => 'Jaijaz Newletter - Send Preview',
         'jaijaz_newsletter_send'        => 'Jaijaz Newletter - Send',
         'jaijaz_newsletter_stats'       => 'Jaijaz Newletter - Stats',
         'jaijaz_newsletter_messages'    => 'Jaijaz Newletter - Messages List',

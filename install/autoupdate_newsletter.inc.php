@@ -122,6 +122,17 @@ $default_fd[$table]['preview'] = array(
         'fd_tabname' => "4. Send",
     );
 
+$default_fd[$table]['sendpreview'] = array(
+        'fd_name' => "Send Preview",
+        'fd_type' => "jaijaz_newsletter_sendpreview",
+        'fd_showlabel' => "no",
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
+        'fd_tabname' => "4. Send",
+    );
+
 $default_fd[$table]['send'] = array(
         'fd_name' => "Newsletter Delivery",
         'fd_type' => "jaijaz_newsletter_send",
