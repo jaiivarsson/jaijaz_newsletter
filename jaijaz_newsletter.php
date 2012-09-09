@@ -64,7 +64,6 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         global $smarty;
         // get the newsletter and display it on the page with a back link
         $newsletter = Jojo::selectRow("SELECT * FROM {newsletter_messages} WHERE newsletter_messageid = ?", $id);
-        $smarty->assign('newsletter', $newsletter);
 
         if ($online) {
             // check to see if this came from index page. if so then provide a back link to it
@@ -80,7 +79,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             $smarty->assign('emailerTop', $smarty->fetch('newsletter_email_header.tpl'));
         }
 
-        $body = $smarty->fetch('newsletter_body.tpl');
+        $body = self::assementHtml($newsletter);
         $smarty->assign('content', $body);
         
         // get the template and merge it in
