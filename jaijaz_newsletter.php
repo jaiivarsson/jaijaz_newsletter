@@ -63,21 +63,11 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         
         global $smarty;
         // get the newsletter and display it on the page with a back link
-        $newsletter = Jojo::selectRow("SELECT * FROM {newsletter_messages} WHERE newsletter_messageid = ?", $id);
+        $newsletter = self::getNewsletter($id);
 
-        if ($online) {
-            // check to see if this came from index page. if so then provide a back link to it
-            $referer = $_SERVER['HTTP_REFERER'];
-            if (strstr($referer, _SITEURL)) {
-                $smarty->assign('referer', $referer);
-                $smarty->assign('emailerTop', $smarty->fetch('newsletter_online_header.tpl'));
-                $smarty->assign('emailerBottom', $smarty->fetch('newsletter_online_header.tpl'));
-            }
-        } else {
-            $url = _SITEURL . '/' . Jojo::rewrite('newsletters', $id, $newsletter['subject'], '');
-            $smarty->assign('url', $url);
-            $smarty->assign('emailerTop', $smarty->fetch('newsletter_email_header.tpl'));
-        }
+        $emailer = self::getEmailerTopBottom($id, $online);
+        $smarty->assign('emailerTop', $emailer['top']);
+        $smarty->assign('emailerBottom', $emailer['bottom']);
 
         $body = self::assementHtml($newsletter);
         $smarty->assign('content', $body);
@@ -85,6 +75,33 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         // get the template and merge it in
         $template = Jojo::selectRow("SELECT * FROM {email_template} WHERE email_templateid = ?", $newsletter['template']);
         return $smarty->fetch($template['tpl_filename']);
+    }
+
+    function getEmailerTopBottom($id, $online = false) {
+        global $smarty;
+        // get the newsletter and display it on the page with a back link
+        $newsletter = self::getNewsletter($id);
+        $emailer = array();
+        if ($online) {
+            // check to see if this came from index page. if so then provide a back link to it
+            $referer = $_SERVER['HTTP_REFERER'];
+            if (strstr($referer, _SITEURL)) {
+                $smarty->assign('referer', $referer);
+                $emailer['top'] = $smarty->fetch('newsletter_online_header.tpl');
+                $emailer['bottom'] = $smarty->fetch('newsletter_online_header.tpl');
+            }
+        } else {
+            $url = _SITEURL . '/' . Jojo::rewrite('newsletters', $id, $newsletter['subject'], '');
+            $smarty->assign('url', $url);
+            $emailer['top'] = $smarty->fetch('newsletter_email_header.tpl');
+            $emailer['bottom'] = '';
+        }
+        return $emailer;
+    }
+
+    function getNewsletter($id) {
+        $newsletter = Jojo::selectRow("SELECT * FROM {newsletter_messages} WHERE newsletter_messageid = ?", $id);
+        return $newsletter;
     }
 
     /** 
