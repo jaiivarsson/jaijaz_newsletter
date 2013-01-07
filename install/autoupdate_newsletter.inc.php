@@ -407,7 +407,7 @@ $default_fd[$table]['status'] = array(
 
 $default_fd[$table]['confirmed'] = array(
         'fd_name' => "Confirmed",
-        'fd_type' => "unixdate",
+        'fd_type' => "readonly",
         'fd_readonly' => "1",
         'fd_size' => "0",
         'fd_rows' => "0",
