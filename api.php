@@ -42,6 +42,7 @@ Jojo::addFilter('formfields_last', 'formfields_last', 'jaijaz_newsletter_subscri
 Jojo::registerUri('/newsletters/[id:integer]/[string]',  'Jojo_Plugin_Jaijaz_Newsletter');
 Jojo::registerUri('/subscription/[action:string]/[token:[a-zA-Z0-9]{20}]',  'Jojo_Plugin_Jaijaz_newsletter_subscribe');
 Jojo::registerUri('/unsubscribe/[id:integer]/[token:[a-zA-Z0-9]{20}]',  'Jojo_Plugin_Jaijaz_newsletter_unsubscribe');
+Jojo::registerUri('/unsubscribe/[id:integer]',  'Jojo_Plugin_Jaijaz_newsletter_unsubscribe');
 
 
 $_options[] = array(

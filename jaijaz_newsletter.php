@@ -23,7 +23,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
 
         if ($id) {
             $content = self::getNewsletterHtml($id, true);
-            
+
             // send it to the browser
             header('Content-Type: text/html');
             header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
@@ -41,7 +41,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
 
             $content['content']  = $smarty->fetch('newsletter_index.tpl');
         }
-        
+
         return $content;
     }
 
@@ -51,16 +51,16 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         return _PROTOCOL.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     }
 
-    /** 
+    /**
      * function to get a full newsletter html
-     * 
+     *
      * @param $id array
      * @param $online boolean
-     * 
+     *
      * @return $content
      */
     function getNewsletterHtml($id, $online = false) {
-        
+
         global $smarty;
         // get the newsletter and display it on the page with a back link
         $newsletter = self::getNewsletter($id);
@@ -71,7 +71,7 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
 
         $body = self::assementHtml($newsletter);
         $smarty->assign('content', $body);
-        
+
         // get the template and merge it in
         $template = Jojo::selectRow("SELECT * FROM {email_template} WHERE email_templateid = ?", $newsletter['template']);
         return $smarty->fetch($template['tpl_filename']);
@@ -104,11 +104,11 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
         return $newsletter;
     }
 
-    /** 
+    /**
      * function to process events for the newsletter
-     * 
+     *
      * @param $data array
-     * 
+     *
      * @return $success
      */
     function processEvent($data) {
@@ -129,12 +129,12 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             Jojo::updateQuery($query, $data['newsletter_messageid']);
         }
     }
-    
-    /** 
+
+    /**
      * compile the html for the newsletter
-     * 
+     *
      * @param $newsletter array
-     * 
+     *
      * @return $html string
      */
     function assementHtml($newsletter = false)
@@ -145,49 +145,49 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
 
         /* Apply filter to allow other plugins to alter the newsletter */
         $newsletter = Jojo::applyFilter('jaijaz_newsletter_html', $newsletter);
-        
+
         $smarty->assign('newsletter', $newsletter);
         $html = $smarty->fetch('newsletter_body.tpl');
         // return the html
         return $html;
     }
-    
-    /** 
+
+    /**
      * TODO: complete so that text version is a proper text version
      * compile the text for the newsletter
-     * 
+     *
      * @param $newsletter array
-     * 
+     *
      * @return $text string
      */
     function assementText($newsletter = false)
     {
         if (!$newsletter)
             return "";
-        
+
         $html = "";
         // TODO: get text version working
         /* Apply filter to allow other plugins to alter the newsletter */
         // $newsletter = Jojo::applyFilter('jaijaz_newsletter_text', $newsletter);
-        
+
         $html .= $newsletter['body'];
         // return the html
         return $html;
     }
-    
-    /** 
+
+    /**
      * send a newsletter to the emailer plugin to schedule the sending
-     * 
+     *
      * @param $id int the newsletter id to be scheduled
      * @param $scheduledate int the unix timestamp of when you wish the newsletter to be sent
-     * 
+     *
      * @return $result array whether it was successfully sceduled and a message
      */
-    function sendNewsletter($id = 0, $scheduledate = false)
+    static function sendNewsletter($id = 0, $scheduledate = false)
     {
         if (!$scheduledate)
             $scheduledate = strtotime('-1 second');
-        
+
         // setup the return array
         $return = array();
         // get the newsletter
@@ -197,8 +197,8 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             $return['message'] = "Couldn't find the newsletter to send";
             return $return;
         }
-            
-        
+
+
         // get the list of people to receive the newsletter
         $receiptiants = Jojo::selectQuery("SELECT DISTINCT s.* FROM {newsletter_subscribers} s LEFT JOIN {newsletter_list_subscribers} ls ON s.newsletter_subscriberid = ls.newsletter_subscriberid LEFT JOIN {newsletter_message_lists} ml ON ls.newsletter_listid = ml.newsletter_listid WHERE s.status = ? AND ml.newsletter_messageid = ?", array('active', $id));
         //var_dump($receiptiants);
@@ -207,11 +207,11 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             $return['message'] = "Couldn't find and people to send it to. Make sure you have selected a list.";
             return $return;
         }
-        
+
         // loop through receipiants and schedule the email
         foreach ($receiptiants as $r => $recipiant) {
             $res = self::queueNewsletter($newsletter, $recipiant, $scheduledate);
-            
+
         }
         $return['message'] = "Newsletter has been queued";
         $return['result'] = true;
@@ -231,32 +231,32 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
             Jojo::updateQuery("UPDATE {newsletter_messages} SET status = ?, send_date = ? WHERE newsletter_messageid = ?", array('scheduled', $scheduledate, $id));
         }
 
-        
+
         return $return;
     }
-    
+
     /**
      * queue an email into the emailer plugin
-     * 
+     *
      * @param $newsletter array
      * @param $recipiant array
-     * 
+     *
      */
     function queueNewsletter($newsletter = false, $recipiant = false, $scheduledate = false)
     {
         if (!$newsletter || !$recipiant) {
             return false;
         }
-            
+
         if (!$scheduledate)
             $scheduledate = time();
-        
+
         // include the emailer class
         foreach (Jojo::listPlugins('classes/jaijaz_emailer_email.class.php') as $pluginfile) {
             require_once($pluginfile);
             break;
         }
-        
+
         // create emailer object and set everything
         $email = new Jaijaz_Emailer_Email();
         $email->receiverid      = $recipiant['newsletter_subscriberid'];
@@ -284,10 +284,10 @@ class Jojo_Plugin_Jaijaz_newsletter extends Jojo_Plugin
 
     /**
      * create an array of stats for a newsletter mesage
-     * 
+     *
      * @param $newsletter array
      * @param $stats array
-     * 
+     *
      */
     function getStats($newsletter = false)
     {

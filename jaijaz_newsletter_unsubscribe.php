@@ -22,27 +22,33 @@ class Jojo_Plugin_Jaijaz_newsletter_unsubscribe extends Jojo_Plugin
         $id = Jojo::getFormData('id', '');
         $token  = Jojo::getFormData('token', '');
         $email  = Jojo::getFormData('email', '');
-
         if ($id != '' && $token != '') {
             self::addUnsubcribe($id);
-            $user = Jojo::selectRow("SELECT email FROM {newsletter_subscribers} WHERE token = ?", $token);
-            self::unsubscribeUser($token);
+            $user = Jojo::selectRow("SELECT * FROM {newsletter_subscribers} WHERE token = ?", $token);
+            if ($user) {
+                self::unsubscribeUser($user['newsletter_subscriberid']);
+            }
 
             $content['title'] = "Unsubscribe success";
             $content['content'] = "The address " . $user['email'] . " has been unsubscribed.";
 
         } elseif ($_POST['submit'] == "Submit" && $email != '') {
-            $user = Jojo::selectRow("SELECT token FROM {newsletter_subscribers} WHERE email = ?", $email);var_dump($user);
-            self::unsubscribeUser($user['token']);
+            if ($id != '') self::addUnsubcribe($id);
+            $user = Jojo::selectRow("SELECT * FROM {newsletter_subscribers} WHERE email = ?", $email);
+            if ($user) {
+                self::unsubscribeUser($user['newsletter_subscriberid']);
+            }
 
             $content['title'] = "Unsubscribe success";
             $content['content'] = "The address " . $user['email'] . " has been unsubscribed.";
         } else {
-
+            if ($id != '') {
+                $smarty->assign('id', $id);
+            }
             $content['title'] = "Unsubscribe";
             $content['content'] = $smarty->fetch('newsletter_unsubscribe.tpl');
         }
-        
+
         return $content;
     }
 
@@ -57,8 +63,8 @@ class Jojo_Plugin_Jaijaz_newsletter_unsubscribe extends Jojo_Plugin
         Jojo::updateQuery("UPDATE {newsletter_messages} SET unsubscribe = unsubscribe+1 WHERE newsletter_messageid = ?", $newsletterid);
     }
 
-    function unsubscribeUser($token)
+    function unsubscribeUser($id)
     {
-        Jojo::updateQuery("UPDATE {newsletter_subscribers} SET status = ?, unsubscribed_date = ? WHERE token = ?", array('unsubscribed', time(), $token));
+        Jojo::updateQuery("UPDATE {newsletter_subscribers} SET status = ?, unsubscribed_date = ? WHERE newsletter_subscriberid = ?", array('unsubscribed', time(), $id));
     }
 }

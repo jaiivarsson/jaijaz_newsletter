@@ -4,6 +4,7 @@
 	    <input type="text" class="input text required email" size="30" name="email" id="email" value="" /><span class="required">*</span>
     </div>
     <div  class="form-fieldset submit">
+    	{if $id}<input type="hidden" name="id" value="{$id}">{/if}
         <label>&nbsp;</label><input name="submit" type="submit" value="Submit" class="button" data-normalval="Submit"  /><br />
    </div>
 </form>
